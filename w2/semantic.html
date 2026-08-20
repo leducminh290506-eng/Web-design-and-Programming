@@ -4,13 +4,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Web Design And Programming</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600;800&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
 </head>
 
 <body>
-    <header>
-        <img src="https://fda.neu.edu.vn/wp-content/uploads/2026/01/Logo_FDA_2026-880x138.png" alt="logo" width="200">
-        <h2>Web Design And Programming</h2>
+    <header class="site-header">
+        <img class="logo" src="https://fda.neu.edu.vn/wp-content/uploads/2026/01/Logo_FDA_2026-880x138.png" alt="logo">
+        <div class="school">
+            <div class="school-name">ĐẠI HỌC KINH TẾ QUỐC DÂN</div>
+            <div class="school-sub">KHOA KHOA HỌC DỮ LIỆU VÀ TRÍ TUỆ NHÂN TẠO</div>
+        </div>
     </header>
     <nav>
         <a href="#overview">Overview</a>
@@ -18,7 +25,30 @@
         <a href="#result">Result</a>
         <a href="#conclusion">Conclusion</a>
     </nav>
-    <main>
+    <main class="content">
+        <section class="hero">
+            <h1 class="title">Web Design And<br>Programming</h1>
+            <nav class="top-nav">
+                <a href="#overview">Overview</a>
+                <a href="#core-features">Core Features</a>
+                <a href="#result">Result</a>
+                <a href="#conclusion">Conclusion</a>
+            </nav>
+        </section>
+
+        <section id="products" class="products">
+            <div class="big-list">
+                <div class="big-item">Product 1</div>
+                <div class="big-item">Product 2</div>
+                <div class="big-item">Product 3</div>
+            </div>
+            <div class="small-list">
+                <div class="small-item">Product 4</div>
+                <div class="small-item">Product 5</div>
+                <div class="small-item">Product 6</div>
+            </div>
+        </section>
+
         <section id="overview">
             <h2>Overview</h2>
             <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quos nesciunt sit voluptas incidunt. Possimus

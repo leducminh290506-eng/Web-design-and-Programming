@@ -1,0 +1,80 @@
+.content {
+	max-width: 980px;
+	margin: 0 auto;
+	padding: 20px 24px;
+	font-family: 'Montserrat', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+	color: #222;
+}
+
+/* Header */
+.site-header{
+	display:flex;
+	align-items:center;
+	gap:16px;
+	padding: 8px 24px;
+}
+.logo{
+	width:64px;
+	height:auto;
+}
+.school-name{
+	font-weight:700;
+	color:#0b5aa6;
+	font-size:14px;
+}
+.school-sub{
+	font-size:12px;
+	color:#1b76b5;
+}
+
+/* Big title */
+.title{
+	font-family: 'Montserrat', 'Helvetica', sans-serif;
+	color: #c72b2b;
+	font-weight:800;
+	font-size: clamp(48px, 8vw, 120px);
+	line-height: 0.95;
+	margin: 8px 0 12px;
+}
+
+.top-nav{
+	margin-bottom: 18px;
+}
+.top-nav a{
+	color:#1b46a8;
+	margin-right:18px;
+	text-decoration: underline;
+	font-size:18px;
+}
+
+/* Products list */
+.products{
+	margin-top: 12px;
+}
+.big-list .big-item{
+	font-size: clamp(40px, 7vw, 96px);
+	color: #e07a2f;
+	font-weight:300;
+	margin: 6px 0;
+	font-family: 'Montserrat', Arial, sans-serif;
+}
+
+.small-list{
+	margin-top: 12px;
+}
+.small-item{
+	font-family: 'Lora', Georgia, serif;
+	font-style: italic;
+	color: #6b2e5a;
+	font-size: 28px;
+	margin: 4px 0 0 6px;
+}
+
+/* Feature blurb */
+.feature-blurb p{max-width:760px;color:#333;}
+
+@media (max-width:600px){
+	.title{font-size:42px}
+	.big-list .big-item{font-size:40px}
+	.small-item{font-size:20px}
+}
