@@ -7,8 +7,10 @@ console.log("sum of thpt_score: " +  sum);
 for (let subject in thpt_score) {
     if (subject !== "name " && thpt_score[subject] > 8)
         console.log(subject + " has score more than 8");
+}
 // Calculate the highest score of thpt_score
-    let current_score = 0;
+let current_score = 0;
+for (let subject in thpt_score) {
     if (subject !== "name" && thpt_score[subject] > current_score) {
         current_score = thpt_score[subject];
         console.log("Highest subject score is: " + subject + " with " + current_score);
