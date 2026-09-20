@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>House Price Prediction</title>
+</head>
+<body>
+	<h1>House Price Prediction</h1>
+
+	<form id="house-form">
+		<label for="area">Area (m²)</label>
+		<input id="area" name="area" type="number" step="any" required>
+
+		<label for="bedrooms">Bedrooms</label>
+		<input id="bedrooms" name="bedrooms" type="number" min="0" required>
+
+		<label for="location">Location</label>
+		<input id="location" name="location" type="text" value="other">
+
+		<button type="submit">Predict Price</button>
+	</form>
+
+	<p id="result"></p>
+
+	<script>
+		const form = document.getElementById("house-form");
+		const result = document.getElementById("result");
+
+		form.addEventListener("submit", async (event) => {
+			event.preventDefault();
+			result.textContent = "";
+
+			const area = document.getElementById("area").value;
+			const bedrooms = document.getElementById("bedrooms").value;
+			const location = document.getElementById("location").value;
+			const params = new URLSearchParams({ area, bedrooms, location });
+
+			try {
+				const response = await fetch(`/predict?${params}`);
+
+				const data = await response.json();
+				result.textContent = `Predicted price: ${data.predicted_price.toLocaleString("vi-VN")} VND`;
+			} catch (error) {
+				result.textContent = "Unable to predict the house price";
+			}
+		});
+	</script>
+</body>
+</html>
