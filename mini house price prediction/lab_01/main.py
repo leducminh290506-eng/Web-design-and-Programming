@@ -1,6 +1,13 @@
-from fastapi import FastAPI, Query, HTTPException
+import time
+from pathlib import Path
+
+from fastapi import Cookie, FastAPI, HTTPException, Query, Request, Response
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
+
+FRONTEND_DIR = Path(__file__).resolve().parent.parent / "frontend"
 
 
 class ItemCreate(BaseModel):
@@ -38,23 +45,28 @@ class HousePricePrediction(BaseModel):
 _items: list[ItemPublic] = []
 _next_id: int = 1
 
-app = FastAPI()
+app = FastAPI(title="Item Management & House Price Prediction API")
 
-app.mount("/static", StaticFiles(directory="../frontend"), name="static")
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+if FRONTEND_DIR.exists():
+    app.mount("/static", StaticFiles(directory=str(FRONTEND_DIR), html=True), name="static")
+
+@app.get("/", include_in_schema=False)
+def root():
+    return RedirectResponse(url="/static/index.html")
 
 def _find(item_id: int) -> ItemPublic | None:
     for it in _items:
         if it.id == item_id:
             return it
     return None
-
-# @app.get("/")
-# def root():
-#     return {"message": "Hello World"}
-
-# @app.get("/items/me")
-# def read_me():
-#     return {"message": "Welcome me"}
 
 @app.get("/items/{item_id}", response_model=ItemPublic)
 def read_item(item_id: int):
@@ -176,3 +188,49 @@ def delete_item(item_id: int):
 def predict_house_price(data: HousePriceRequest):
     price = data.area_sqm * 15_000_000 - data.distance_to_center_km * 5_000_000 + data.bedrooms * 20_000_000
     return HousePricePrediction(predicted_price=price, currency="VND")
+
+_cart: list[str] = []
+
+@app.post("/cart/add")
+def add_cart_item(item: str):
+    _cart.append(item)
+    return {"cart": _cart}
+
+@app.get("/cart")
+def get_cart():
+    return {"cart": _cart}
+
+@app.middleware("http")
+async def add_process_time(request: Request, call_next):
+    start = time.perf_counter()
+    response = await call_next(request)
+    response.headers["X-Process-Time"] = f"{time.perf_counter() - start:.6f}"
+    return response
+
+
+@app.middleware("http")
+async def log_requests(request: Request, call_next):
+    start = time.perf_counter()
+    response = await call_next(request)
+    print(f"{request.method} {request.url.path} -> {response.status_code} ({time.perf_counter() - start:.3f}s)")
+    return response
+
+
+@app.middleware("http")
+async def m2(request: Request, call_next):
+    print("m2 start")
+    try:
+        response = await call_next(request)
+    except Exception as e:
+        return JSONResponse(status_code=500, content={"detail": str(e)})
+    print("m2 end")
+    return response
+
+
+@app.get("/visits")
+def count_visits(response: Response, visits: str | None = Cookie(default=None)):
+    count = int(visits) if visits else 0
+    count += 1
+    response.set_cookie(key="visits", value=str(count), httponly=True, samesite="lax")
+    return {"visits": count}
+    
